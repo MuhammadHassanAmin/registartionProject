@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,8 @@ public class CustomAdapter_ChooseQuizTopic extends ArrayAdapter<quizTopicModel> 
         v.setTag(singleQuiz.getName());
         TextView tv = v.findViewById(R.id.tv_choose_topic_item);
         tv.setText(singleQuiz.getName());
+        ImageView img = v.findViewById(R.id.ivChooseTopic);
+        Picasso.get().load(singleQuiz.getImg()).into(img);
         return v;
     }
 };

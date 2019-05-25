@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -58,6 +60,9 @@ public class ChooseOpponent_RCAdapter extends RecyclerView.Adapter<ChooseOpponen
         final UserModel userDetails = userModels.get(position);
 
         holder.userName.setText(userDetails.getName());
+        Picasso.get().load(userDetails.getDp()).resize(100, 100)
+                .centerCrop().into(holder.userPicture);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

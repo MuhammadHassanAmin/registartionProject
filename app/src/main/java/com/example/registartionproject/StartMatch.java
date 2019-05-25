@@ -7,7 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.firebase.client.collection.LLRBNode;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 public class StartMatch extends AppCompatActivity {
 
@@ -26,6 +31,13 @@ public class StartMatch extends AppCompatActivity {
         intent.getStringExtra("opponent_dp");
         intent.getStringExtra("quizTopic");*/
 
+        ImageView userImg = findViewById(R.id.ivUserImg_StartMacth);
+        ImageView opponentImg = findViewById(R.id.ivOpponentImg_StartMacth);
+
+        Picasso.get().load(pref.getString("dp","test")).resize(250, 250)
+                .centerCrop().into(userImg);
+        Picasso.get().load(intent1.getStringExtra("opponent_dp")).resize(250, 250)
+                .centerCrop().into(opponentImg);
 
 
 
@@ -36,7 +48,7 @@ public class StartMatch extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),Match.class);
-                    intent.putExtras(getintent());
+                    intent.putExtras(getintent().getExtras());
                     startActivity(intent);
             }
         });
