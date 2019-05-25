@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class StartMatch extends AppCompatActivity {
@@ -18,6 +20,13 @@ public class StartMatch extends AppCompatActivity {
         String opponent_id = intent.getStringExtra("opponent_id");
         TextView tvTopicHeading= (TextView) findViewById(R.id.tv_QuizTopicHeading);
         tvTopicHeading.setText(intent.getStringExtra("quizTopic"));
-
+        Button btnStartMatch = findViewById(R.id.btnStartMatch);
+        btnStartMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = getIntent();
+                    startActivity(intent);
+            }
+        });
     }
 }
