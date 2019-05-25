@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class Match extends AppCompatActivity {
 
@@ -14,7 +15,11 @@ public class Match extends AppCompatActivity {
         setContentView(R.layout.activity_match);
         SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
         Intent intent = getIntent();
-        String opponent_id = intent.getStringExtra("opponent_id");
+        Toast.makeText(this, intent.getStringExtra("opponent_uid"),Toast.LENGTH_SHORT).show();
 
+        /*intent.getStringExtra("opponent_email");
+        intent.getStringExtra("opponent_name");
+        intent.getStringExtra("opponent_dp");
+        intent.getStringExtra("quizTopic");*/
     }
 }
