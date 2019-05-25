@@ -1,0 +1,20 @@
+package com.example.registartionproject;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class Match extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_match);
+        SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
+        Intent intent = getIntent();
+        String opponent_id = intent.getStringExtra("opponent_id");
+
+    }
+}

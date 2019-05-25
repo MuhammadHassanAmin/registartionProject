@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1093852055682",
+    "firebase_url": "https://quizriphahportal.firebaseio.com",
+    "project_id": "quizriphahportal",
+    "storage_bucket": "quizriphahportal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093852055682:android:fddf5bff9d80af53",
+        "android_client_info": {
+          "package_name": "com.example.registartionproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093852055682-tjsc2n65igr4k8lcv8qkfte8pfk1p6vi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.registartionproject",
+            "certificate_hash": "802bf1dc74a8739cd7127abd5b90eaf02f26dc75"
+          }
+        },
+        {
+          "client_id": "1093852055682-qb5geukpgi4d867e1brqq33q69uuubvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCondZZsktwZek0Cln8mnhjTMmZJYrn9gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093852055682-qb5geukpgi4d867e1brqq33q69uuubvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

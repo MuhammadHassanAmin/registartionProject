@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewlogin"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Login to Riphah Portal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/editText_Email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewlogin"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="Enter Your Email"
+        tools:text="hasan_amin3@yahoo.com" />
+
+    <EditText
+        android:id="@+id/editText_Password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_Email"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="Enter Your Email"
+        android:inputType="textPassword"
+        tools:text="1234" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="CLICK HERE TO LOGIN"
+        android:id="@+id/button_login"
+        android:layout_below="@id/editText_Password"
+        android:layout_marginTop="20dp"/>
+
+
+</RelativeLayout>
