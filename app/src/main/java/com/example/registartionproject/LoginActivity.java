@@ -193,17 +193,13 @@ public class LoginActivity extends AppCompatActivity {
                                             // Display the first 500 characters of the response string.
 
                                             try {
-
                                                 JSONObject obj = new JSONObject(response);
-
                                                 SharedPreferences.Editor editor = pref.edit();
                                                 editor.putInt("userID", Integer.parseInt(obj.getString("id")));
                                                 editor.putString("userName", obj.getString("name"));
                                                 editor.putString("dp", "https://riphahportal.com/storage/profiles/"+obj.getString("picture"));
-
                                                 editor.apply();
                                                 startActivity(intent);
-
                                             } catch (Throwable t) {
                                                 Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
                                             }
@@ -217,25 +213,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Add the request to the RequestQueue.
                             queue.add(stringRequest);
-
-
                         } else {
-
                             // Showing Echo Response Message Coming From Server.
                             Toast.makeText(LoginActivity.this, ServerResponse, Toast.LENGTH_LONG).show();
-
                         }
-
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
                         // Hiding the progress dialog after all task complete.
                         progressDialog.dismiss();
-
                         // Showing error message if something goes wrong.
                         Toast.makeText(LoginActivity.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                     }

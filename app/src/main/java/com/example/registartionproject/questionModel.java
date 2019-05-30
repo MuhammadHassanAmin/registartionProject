@@ -59,6 +59,16 @@ public class questionModel {
         this.correctOpt = correctOpt;
     }
 
+    public String getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+    private String questionID;
+
     private String statement;
     private String A;
     private String B;

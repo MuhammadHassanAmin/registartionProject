@@ -1,6 +1,7 @@
 package com.example.registartionproject;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +17,16 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Integer.parseInt;
+
 public class ChooseOpponent_RCAdapter extends RecyclerView.Adapter<ChooseOpponent_RCAdapter.ViewHolder> {
 
 
     Context context;
     List<UserModel> userModels;
     String quizTopic;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,6 +72,7 @@ public class ChooseOpponent_RCAdapter extends RecyclerView.Adapter<ChooseOpponen
             @Override
             public void onClick(View v) {
 
+
                Intent intent = new Intent(context,StartMatch.class);
                intent.putExtra("opponent_uid",userDetails.getId());
                 intent.putExtra("opponent_email",userDetails.getEmail());
@@ -74,6 +80,7 @@ public class ChooseOpponent_RCAdapter extends RecyclerView.Adapter<ChooseOpponen
                 intent.putExtra("opponent_dp",userDetails.getDp());
                 intent.putExtra("quizTopic", quizTopic);
                 context.startActivity(intent);
+
 
             }
         });

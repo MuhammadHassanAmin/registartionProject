@@ -10,9 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.firebase.client.collection.LLRBNode;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+
+import static java.lang.Integer.parseInt;
 
 public class StartMatch extends AppCompatActivity {
 
@@ -22,14 +27,12 @@ public class StartMatch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_match);
-        SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
+        final SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
         Intent intent1 = getIntent();
         setIntent1(intent1);
-    /*    intent.getStringExtra("opponent_uid");
-        intent.getStringExtra("opponent_email");
-        intent.getStringExtra("opponent_name");
-        intent.getStringExtra("opponent_dp");
-        intent.getStringExtra("quizTopic");*/
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef= db.getReference().child("matches");
+
 
         ImageView userImg = findViewById(R.id.ivUserImg_StartMacth);
         ImageView opponentImg = findViewById(R.id.ivOpponentImg_StartMacth);
@@ -41,15 +44,30 @@ public class StartMatch extends AppCompatActivity {
 
 
 
+
         TextView tvTopicHeading= (TextView) findViewById(R.id.tv_QuizTopicHeading);
         tvTopicHeading.setText(intent1.getStringExtra("quizTopic"));
         Button btnStartMatch = findViewById(R.id.btnStartMatch);
         btnStartMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(),Match.class);
-                    intent.putExtras(getintent().getExtras());
-                    startActivity(intent);
+
+                MatchModel matchModel = new MatchModel();
+                matchModel.competitor_ID = pref.getInt("userID",0);
+                matchModel.opponent_ID = parseInt(getintent().getStringExtra("opponent_uid"));
+                matchModel.topic_Name = getintent().getStringExtra("quizTopic");
+
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference ref = db.getReference().child("matches");
+                DatabaseReference newRef = ref.push();
+                String match_id = newRef.getKey();
+
+                newRef.setValue(matchModel);
+
+                Intent intent = new Intent(getApplicationContext(),Match.class);
+                intent.putExtras(getintent().getExtras());
+                intent.putExtra("match_id",match_id);
+                startActivity(intent);
             }
         });
     }
