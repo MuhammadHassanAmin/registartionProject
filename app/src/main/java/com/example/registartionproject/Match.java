@@ -1,5 +1,6 @@
 package com.example.registartionproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
@@ -44,8 +45,11 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         String[] questionAnswers =  new String[5];
          boolean isQuizFinished;
         RadioGroup RGQuizQuestions;
+        String userType;
+        int userPoints;
     int questionCount;
-
+    FirebaseDatabase database;
+    DatabaseReference matchRef;
     public int getQuestionCount() {
         return questionCount;
     }
@@ -64,7 +68,9 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         Intent intent = getIntent();
         match_id= intent.getStringExtra("match_id");
         String quizTopic = intent.getStringExtra("quizTopic");
+        userType = intent.getStringExtra("userType");
         isQuizFinished=false;
+        userPoints=0;
         //Intializing Views
         stat = findViewById(R.id.tvStat);
         opt1 = findViewById(R.id.rbQuestion1);
@@ -78,18 +84,27 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         opt4.setTag("D");
          tvTimer = findViewById(R.id.tvTimer);
          checkAnsbtn = (Button) findViewById(R.id.btnSubmitAns);
+
          //Database ref for quiz Questions
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+         database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference().child("quizQuestions").child(quizTopic);
-
+        matchRef = database.getReference().child("matches").child(match_id);
         loadQuestionFromDB(ref, this );
-
-
-
     }
     private void finishQuiz()
     {
+        if (userType.equals("competitor"))
+            matchRef.child("competitor_Points").setValue(userPoints);
+        else
+            matchRef.child("opponent_Points").setValue(userPoints);
+        Intent finishIntent = new Intent(this,MatchFinish.class);
+        finishIntent.putExtras(getIntent().getExtras());
+        finishIntent.putExtra("score",userPoints);
+        startActivity(finishIntent);
+
+
         //TODO
+
 
         Toast.makeText(getApplicationContext(),"Quiz End",Toast.LENGTH_SHORT).show();
 
@@ -135,11 +150,23 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
             RadioButton selected = findViewById(selectedID);
             String optSelected = selected.getTag().toString();
             String correctOpt = quizQuestions.get(questionCount).getCorrectOpt();
-            questionAnswers[questionCount] = optSelected;
+            MatchQuestions questions = new MatchQuestions();
+
+            questions.setQuestionID(quizQuestions.get(questionCount).getQuestionID());
+          if (userType.equals("competitor"))
+            questions.setCompetitor_Answer(optSelected);
+           else
+           questions.setOpponent_Answer(optSelected);
+
+
+
+        DatabaseReference newRef=  matchRef.child("matchQuestions").child("question"+(questionCount+1));
+            newRef.setValue(questions);
 
 
             if (optSelected.equals(correctOpt))
             {
+                userPoints++;
                 Toast.makeText(getApplicationContext(),"Correct Answer",Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(getApplicationContext(),"Wrong Answer",Toast.LENGTH_SHORT).show();
@@ -153,17 +180,14 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
             }
     }
 
-
-
-
     void populateUIwithQuestions(int count){
         stat.setText(quizQuestions.get(count).getStatement());
         opt1.setText(quizQuestions.get(count).getA());
         opt2.setText(quizQuestions.get(count).getB());
         opt3.setText(quizQuestions.get(count).getC());
         opt4.setText(quizQuestions.get(count).getD());
-
     }
+
     private  void loadQuestionFromDB(DatabaseReference ref,final DataReceivedListener listener){
         final List<questionModel> quizQuestions = new ArrayList<>();
         ref.orderByKey().limitToFirst(5).addListenerForSingleValueEvent(new ValueEventListener() {

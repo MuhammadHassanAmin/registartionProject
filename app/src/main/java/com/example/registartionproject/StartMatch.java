@@ -1,6 +1,5 @@
 package com.example.registartionproject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.collection.LLRBNode;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import static java.lang.Integer.parseInt;
 
@@ -34,7 +30,7 @@ public class StartMatch extends AppCompatActivity {
         DatabaseReference dbRef= db.getReference().child("matches");
 
 
-        ImageView userImg = findViewById(R.id.ivUserImg_StartMacth);
+        ImageView userImg = findViewById(R.id.ivUserImg_MatchFinish);
         ImageView opponentImg = findViewById(R.id.ivOpponentImg_StartMacth);
 
         Picasso.get().load(pref.getString("dp","test")).resize(250, 250)
@@ -45,9 +41,9 @@ public class StartMatch extends AppCompatActivity {
 
 
 
-        TextView tvTopicHeading= (TextView) findViewById(R.id.tv_QuizTopicHeading);
+        TextView tvTopicHeading= (TextView) findViewById(R.id.tvYourScoreText);
         tvTopicHeading.setText(intent1.getStringExtra("quizTopic"));
-        Button btnStartMatch = findViewById(R.id.btnStartMatch);
+        Button btnStartMatch = findViewById(R.id.btnGoToProfile);
         btnStartMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,12 +57,23 @@ public class StartMatch extends AppCompatActivity {
                 DatabaseReference ref = db.getReference().child("matches");
                 DatabaseReference newRef = ref.push();
                 String match_id = newRef.getKey();
+                MatchQuestions test = new MatchQuestions();
+                test.setQuestionID("empty");
+                test.setCompetitor_Answer("empty");
+                test.setOpponent_Answer("empty");
+                matchModel.matchQuestions.put("question1",test );
+                matchModel.matchQuestions.put("question2",test );
+                matchModel.matchQuestions.put("question3",test );
+                matchModel.matchQuestions.put("question4",test );
 
                 newRef.setValue(matchModel);
 
                 Intent intent = new Intent(getApplicationContext(),Match.class);
                 intent.putExtras(getintent().getExtras());
                 intent.putExtra("match_id",match_id);
+
+                intent.putExtra("userType","competitor");
+
                 startActivity(intent);
             }
         });

@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartMatch"></activity>
+        <activity
+            android:name=".MatchFinish"
+            android:label="@string/title_activity_match_finish"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".StartMatch" />
         <activity android:name=".Match" />
         <activity android:name=".ChooseOpponent" />
         <activity android:name=".ChooseQuizActivity" />

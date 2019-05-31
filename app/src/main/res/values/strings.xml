@@ -29,4 +29,5 @@
         <item>qaisar</item>
 
     </string-array>
+    <string name="title_activity_match_finish">MatchFinish</string>
 </resources>

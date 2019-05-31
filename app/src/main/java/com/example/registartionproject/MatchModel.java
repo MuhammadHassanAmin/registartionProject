@@ -1,6 +1,13 @@
 package com.example.registartionproject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MatchModel {
+    Map<String, MatchQuestions> matchQuestions= new HashMap<String, MatchQuestions>();
+
+
+    private MatchQuestions matchQuestion;
 
     public String getMatch_id() {
         return match_id;
