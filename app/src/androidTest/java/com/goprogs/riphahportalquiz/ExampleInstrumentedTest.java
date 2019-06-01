@@ -1,4 +1,4 @@
-package com.example.registartionproject;
+package com.goprogs.riphahportalquiz;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

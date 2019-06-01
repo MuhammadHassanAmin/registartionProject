@@ -1,4 +1,4 @@
-package com.example.registartionproject;
+package com.goprogs.riphahportalquiz;
 
 import java.util.HashMap;
 import java.util.Map;

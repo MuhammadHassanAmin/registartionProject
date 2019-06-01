@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">registartionProject</string>
+    <string name="app_name">Riphah Portal - Quiz Module</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -30,4 +30,5 @@
 
     </string-array>
     <string name="title_activity_match_finish">MatchFinish</string>
+    <string name="title_activity_default">DefaultActivity</string>
 </resources>

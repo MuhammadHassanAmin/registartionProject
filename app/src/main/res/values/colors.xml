@@ -3,7 +3,16 @@
     <color name="colorPrimary">#19b99a</color>
     <color name="colorSecondary">#9ca1a4</color>
     <color name="colorPrimaryDark">#19AC90</color>
-    <color name="colorAccent">#9ca1a4</color>
+    <color name="colorAccent">#19b99a</color>
     <color name="colorControlHighlight">#00A1FF</color>
+    <color name="year">#999999</color>
+    <color name="title">#222222</color>
+    <color name="bg">#f9f9f9</color>
+    <color name="btnback">#f9f9f9</color>
 
+
+    <color name="white">#FFFFFF</color>
+    <color name="dark_grey">#424242</color>
+    <color name="medium_grey">#9E9E9E</color>
+    <color name="button_grey">#757575</color>
 </resources>

@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/tvStat"
-        android:layout_width="243dp"
-        android:layout_height="43dp"
+        android:layout_width="318dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="68dp"
@@ -23,8 +23,8 @@
 
     <RadioGroup
         android:id="@+id/RGQuizQuestions"
-        android:layout_width="320dp"
-        android:layout_height="432dp"
+        android:layout_width="353dp"
+        android:layout_height="210dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -34,24 +34,25 @@
         android:weightSum="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625">
+        app:layout_constraintVertical_bias="0.281">
 
         <RadioButton
             android:id="@+id/rbQuestion1"
-            android:layout_width="298dp"
-            android:layout_height="55dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="0.13"
             android:checked="false"
             android:text="Male"
             android:textSize="14sp" />
 
         <RadioButton
             android:id="@+id/rbQuestion2"
-            android:layout_width="301dp"
-            android:layout_height="81dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.13"
             android:checked="false"
@@ -60,7 +61,7 @@
 
         <RadioButton
             android:id="@+id/rbQuestion3"
-            android:layout_width="299dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.13"
@@ -70,13 +71,14 @@
 
         <RadioButton
             android:id="@+id/rbQuestion4"
-            android:layout_width="305dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.13"
             android:checked="false"
             android:text="Female"
             android:textSize="14sp" />
+
     </RadioGroup>
 
 
@@ -90,7 +92,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Button"
+        android:text="Next Question"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

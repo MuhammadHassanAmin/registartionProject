@@ -1,58 +1,48 @@
-package com.example.registartionproject;
+package com.goprogs.riphahportalquiz;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 // Firebase
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChooseQuizActivity extends AppCompatActivity {
     Activity currentActivity = this;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_quiz);
+
         SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://quizriphahportal.firebaseio.com/quizTopic");
-        DatabaseReference quizRef = rootRef;
+        FirebaseDatabase rootRef = FirebaseDatabase.getInstance();
+        DatabaseReference quizRef = rootRef.getReference().child("quizTopic");
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.show();
 
-
-
-// Get a reference to our posts
+                // Get a reference to our posts
 
         DatabaseReference ref = quizRef;
 
-// Attach a listener to read the data at our posts reference
+        // Attach a listener to read the data at our posts reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,7 +51,9 @@ public class ChooseQuizActivity extends AppCompatActivity {
                     quizTopicModel quiztopic = postSnapshot.getValue(quizTopicModel.class);
                     quizTopicList.add(quiztopic);
                 }
-                CustomAdapter_ChooseQuizTopic adapter_chooseQuizTopic = new CustomAdapter_ChooseQuizTopic(currentActivity,quizTopicList);
+
+                CustomAdapter_ChooseQuizTopic adapter_chooseQuizTopic = new CustomAdapter_ChooseQuizTopic(currentActivity, quizTopicList);
+                progressDialog.dismiss();
             final ListView lv = findViewById(R.id.lvQuizTopics);
                 lv.setAdapter(adapter_chooseQuizTopic);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

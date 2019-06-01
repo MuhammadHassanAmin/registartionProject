@@ -1,23 +1,17 @@
-package com.example.registartionproject;
+package com.goprogs.riphahportalquiz;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 import static java.lang.Integer.parseInt;
 
 public class ChooseOpponent_RCAdapter extends RecyclerView.Adapter<ChooseOpponent_RCAdapter.ViewHolder> {

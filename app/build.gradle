@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.registartionproject"
+        applicationId "com.goprogs.riphahportalquiz"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -38,5 +38,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 }
-
 apply plugin: 'com.google.gms.google-services'

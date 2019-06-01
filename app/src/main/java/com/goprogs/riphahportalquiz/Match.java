@@ -1,36 +1,27 @@
-package com.example.registartionproject;
+package com.goprogs.riphahportalquiz;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.google.android.gms.tasks.Tasks;
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Semaphore;
 
 public class Match extends AppCompatActivity  implements DataReceivedListener {
     List<questionModel> quizQuestions = new ArrayList<questionModel>();
@@ -47,6 +38,8 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         RadioGroup RGQuizQuestions;
         String userType;
         int userPoints;
+
+        ProgressDialog progressDialog;
     int questionCount;
     FirebaseDatabase database;
     DatabaseReference matchRef;
@@ -63,15 +56,26 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match);
+        if (isQuizFinished){
+                Intent intent = new Intent(this,ChooseQuizActivity.class);
+                startActivity(intent);
+
+        }
         SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
+
         //Intent from last activity
         Intent intent = getIntent();
         match_id= intent.getStringExtra("match_id");
         String quizTopic = intent.getStringExtra("quizTopic");
         userType = intent.getStringExtra("userType");
-        isQuizFinished=false;
+
+
         userPoints=0;
         //Intializing Views
+        progressDialog = new ProgressDialog(Match.this);
+        // Showing progress dialog
+        progressDialog.setMessage("Loading Questions");
+        progressDialog.show();
         stat = findViewById(R.id.tvStat);
         opt1 = findViewById(R.id.rbQuestion1);
         opt2 = findViewById(R.id.rbQuestion2);
@@ -84,7 +88,6 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         opt4.setTag("D");
          tvTimer = findViewById(R.id.tvTimer);
          checkAnsbtn = (Button) findViewById(R.id.btnSubmitAns);
-
          //Database ref for quiz Questions
          database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference().child("quizQuestions").child(quizTopic);
@@ -93,6 +96,7 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
     }
     private void finishQuiz()
     {
+        isQuizFinished=true;
         if (userType.equals("competitor"))
             matchRef.child("competitor_Points").setValue(userPoints);
         else
@@ -120,11 +124,12 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
                 final CountDownTimer quizTimer = new CountDownTimer(10000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        tvTimer.setText("seconds remaining: " + millisUntilFinished / 1000);
+                        tvTimer.setText("Seconds Remaining: " + millisUntilFinished / 1000);
                     }
 
                     public void onFinish() {
                         tvTimer.setText("done!");
+                        checkAnswer(getQuestionCount());
 
                     }
                 }.start();
@@ -136,8 +141,8 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
 
                quizTimer.onFinish();
                quizTimer.cancel();
-               checkAnswer(getQuestionCount());
-               RGQuizQuestions.clearCheck();
+
+
            }
        });
 
@@ -146,41 +151,65 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
     }
     void checkAnswer(int questionCount){
 
-            int selectedID = RGQuizQuestions.getCheckedRadioButtonId();
+            int selectedID = RGQuizQuestions.getCheckedRadioButtonId();// No Opt Selected Condition
+        if (selectedID == -1){
+            MatchQuestions questions = new MatchQuestions();
+
+            questions.setQuestionID(quizQuestions.get(questionCount).getQuestionID());
+            if (userType.equals("competitor"))
+                questions.setCompetitor_Answer("noItemSelected");
+            else
+                questions.setOpponent_Answer("noItemSelected");
+
+            Toast.makeText(getApplicationContext(), "Wrong Answer", Toast.LENGTH_SHORT).show();
+
+            DatabaseReference newRef = matchRef.child("matchQuestions").child("question" + (questionCount + 1));
+            newRef.setValue(questions);
+
+            setQuestionCount(getQuestionCount() + 1);
+            if (getQuestionCount() < 5)
+                loadNextQuestion();
+            else {
+                finishQuiz();
+                checkAnsbtn.setVisibility(View.GONE);
+            }
+
+        }else {
             RadioButton selected = findViewById(selectedID);
             String optSelected = selected.getTag().toString();
             String correctOpt = quizQuestions.get(questionCount).getCorrectOpt();
             MatchQuestions questions = new MatchQuestions();
 
             questions.setQuestionID(quizQuestions.get(questionCount).getQuestionID());
-          if (userType.equals("competitor"))
-            questions.setCompetitor_Answer(optSelected);
-           else
-           questions.setOpponent_Answer(optSelected);
+            if (userType.equals("competitor"))
+                questions.setCompetitor_Answer(optSelected);
+            else
+                questions.setOpponent_Answer(optSelected);
 
 
-
-        DatabaseReference newRef=  matchRef.child("matchQuestions").child("question"+(questionCount+1));
+            DatabaseReference newRef = matchRef.child("matchQuestions").child("question" + (questionCount + 1));
             newRef.setValue(questions);
 
 
-            if (optSelected.equals(correctOpt))
-            {
+            if (optSelected.equals(correctOpt)) {
                 userPoints++;
-                Toast.makeText(getApplicationContext(),"Correct Answer",Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getApplicationContext(),"Wrong Answer",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Correct Answer", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Wrong Answer", Toast.LENGTH_SHORT).show();
             }
-             setQuestionCount(getQuestionCount()+1);
-            if (getQuestionCount()<5)
+            setQuestionCount(getQuestionCount() + 1);
+            if (getQuestionCount() < 5)
                 loadNextQuestion();
             else {
                 finishQuiz();
-            checkAnsbtn.setVisibility(View.GONE);
+                checkAnsbtn.setVisibility(View.GONE);
             }
+        }
+
     }
 
     void populateUIwithQuestions(int count){
+        RGQuizQuestions.clearCheck();
         stat.setText(quizQuestions.get(count).getStatement());
         opt1.setText(quizQuestions.get(count).getA());
         opt2.setText(quizQuestions.get(count).getB());
@@ -210,6 +239,7 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
 
     @Override
     public void onDataReceived(List<questionModel> quizQuestions) {
+        progressDialog.dismiss();
         Toast.makeText(this,"Data Received From Database",Toast.LENGTH_SHORT).show();
         this.quizQuestions=quizQuestions;
         loadNextQuestion();
