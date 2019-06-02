@@ -31,4 +31,7 @@
     </string-array>
     <string name="title_activity_match_finish">MatchFinish</string>
     <string name="title_activity_default">DefaultActivity</string>
+    <string name="title_activity_logout">logout</string>
+
+
 </resources>

@@ -84,4 +84,6 @@ public class StartMatch extends AppCompatActivity {
     private void setIntent1(Intent intent1) {
         this.intent1 = intent1;
     }
+
+
 }

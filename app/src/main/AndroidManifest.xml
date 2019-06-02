@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Profile"></activity>
+        <activity
+            android:name=".logout"
+            android:label="@string/title_activity_logout"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Profile" />
         <activity
             android:name=".DefaultActivity"
             android:label="@string/title_activity_default"
@@ -35,10 +39,9 @@
         <activity android:name=".Match" />
         <activity android:name=".ChooseOpponent" />
         <activity android:name=".ChooseQuizActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
