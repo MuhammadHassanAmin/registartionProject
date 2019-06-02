@@ -7,14 +7,14 @@
     tools:context=".StartMatch">
 
     <ImageView
-        android:id="@+id/ivUserImg_MatchFinish"
+        android:id="@+id/ivUserImg_Profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:maxWidth="50dp"
         android:maxHeight="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvYourScoreTitle"
+        app:layout_constraintBottom_toTopOf="@+id/tvUserName_Profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +34,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvYourScoreTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName_Profile" />
 
     <TextView
-        android:id="@+id/tvYourScoreTitle"
+        android:id="@+id/tvQuizStatsTitle_Profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="256dp"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnGoToProfile"
+        android:id="@+id/btnGoToProfile_MatchFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -72,8 +72,8 @@
         android:text="Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvYourScoreText"
-        app:layout_constraintVertical_bias="0.141" />
+        app:layout_constraintVertical_bias="0.588" />
 </android.support.constraint.ConstraintLayout>

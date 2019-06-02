@@ -244,6 +244,9 @@ public class Match extends AppCompatActivity  implements DataReceivedListener {
         this.quizQuestions=quizQuestions;
         loadNextQuestion();
     }
+    public void onDataReceived_PastMatches(List<PastMatch_RC_Model> quizQuestions) {
+
+    }
 }
 
 

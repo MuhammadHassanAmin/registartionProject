@@ -30,7 +30,7 @@ public class StartMatch extends AppCompatActivity {
         DatabaseReference dbRef= db.getReference().child("matches");
 
 
-        ImageView userImg = findViewById(R.id.ivUserImg_MatchFinish);
+        ImageView userImg = findViewById(R.id.ivUserImg_Profile);
         ImageView opponentImg = findViewById(R.id.ivOpponentImg_StartMacth);
 
         Picasso.get().load(pref.getString("dp","test")).resize(250, 250)
@@ -43,7 +43,7 @@ public class StartMatch extends AppCompatActivity {
 
         TextView tvTopicHeading= (TextView) findViewById(R.id.tvYourScoreText);
         tvTopicHeading.setText(intent1.getStringExtra("quizTopic"));
-        Button btnStartMatch = findViewById(R.id.btnGoToProfile);
+        Button btnStartMatch = findViewById(R.id.btnGoToProfile_MatchFinish);
         btnStartMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

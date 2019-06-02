@@ -64,9 +64,9 @@ public class ChooseOpponent extends AppCompatActivity {
     }
     public  void  setRCadpter(List list){
         adapter = new ChooseOpponent_RCAdapter(this,list,quizTopic);
-
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
     }
     protected void fetchUserData(){
 
