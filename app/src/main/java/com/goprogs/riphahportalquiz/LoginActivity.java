@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         //Maintaing session
         pref = getSharedPreferences("user_details", MODE_PRIVATE);
         //initializing intent
-        intent = new Intent(this, Profile.class);
+        intent = new Intent(this, ChooseQuizActivity.class);
 
         if (pref.contains("userID") && pref.contains("userName")) {
             startActivity(intent);
