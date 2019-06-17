@@ -1,7 +1,10 @@
 package com.goprogs.riphahportalquiz;
 
+import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
@@ -26,12 +29,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -50,9 +51,10 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
     List<PastMatch_RC_Model> pastMatchesRcAdapterProfileList = new ArrayList<>();
     SharedPreferences pref;
     String userNameForTV,userDpForIV;
+    ProgressDialog progressDialog;
 
     RecyclerView.Adapter adapter_profile ;
-
+    final  String  nopic = "nopic";
 
     RecyclerView recyclerView;
     DrawerLayout mDrawerLayout;
@@ -68,10 +70,12 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
         //initializing viws
         userDP= findViewById(R.id.ivUserImg_Profile);
         userName = findViewById(R.id.tvUserName_Profile);
-        recyclerView = findViewById(R.id.rcPastMatches_Profile);
+        recyclerView = findViewById(R.id.rcNewNotifications_Notifications);
 
         recyclerView.setHasFixedSize(true);
-
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.show();
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         // initialization variables
         count=0;
@@ -120,6 +124,9 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                         if (id == R.id.nav_home) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+                        } else if (id == R.id.nav_notificaitons) {
+                            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+                            startActivity(intent);
                         } else if (id == R.id.nav_take_quiz) {
                             Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);
                             startActivity(intent);
@@ -164,14 +171,17 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                         try {
                             JSONObject obj = new JSONObject(response);
                             userDpForIV = "https://riphahportal.com/storage/profiles/"+obj.getString("picture");
-                            if (obj.getString("picture").equals("nopic"));
+
+                            userNameForTV = obj.getString("name");
+
+                            if (obj.getString("picture").equals(nopic))
                             {
                                 userDpForIV="https://riphahportal.com/images/default-profile.jpg";
                             }
 
                             pastMatchesRcAdapterProfileList.get(count).setOpponentDp(userDpForIV);
                             pastMatchesRcAdapterProfileList.get(count).setOpponentName(userNameForTV);
-
+                            adapter_profile.notifyDataSetChanged();
                         } catch (Throwable t) {
                             Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
                         }
@@ -202,7 +212,10 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                     //checking and setting Match Result
                     if (pref.getInt("userID",0) == matchModel.getCompetitor_ID()) {
                         //If user is a competitor
-                        if (matchModel.getCompetitor_Points() == matchModel.getOpponent_Points()){
+                       if(!matchModel.isIfFinished()){
+                           pastMatch_rc_model.setResult("Waiting...");
+                       }
+                        else if (matchModel.getCompetitor_Points() == matchModel.getOpponent_Points()){
                             pastMatch_rc_model.setResult("Draw");
 
                         }else{
@@ -217,7 +230,10 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                             }
                         }
                     }else{
-                        if (matchModel.getOpponent_Points() == matchModel.getCompetitor_Points()){
+                       //if user is opponent
+                        if(!matchModel.isIfFinished()){
+                            pastMatch_rc_model.setResult("Waiting...");
+                        }else if (matchModel.getOpponent_Points() == matchModel.getCompetitor_Points()){
                             pastMatch_rc_model.setResult("Draw");
 
                         }else{
@@ -225,10 +241,10 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                             if (matchModel.getOpponent_Points() > matchModel.getCompetitor_Points())
                             {
                                 // is opponent is the winner
-                                pastMatch_rc_model.setResult("Lose");
+                                pastMatch_rc_model.setResult("Won");
                             }
                             else{
-                                pastMatch_rc_model.setResult("Win");
+                                pastMatch_rc_model.setResult("Lost");
 
                             }
                         }
@@ -245,6 +261,8 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
                     pastMatchesRcAdapterProfileList.add(pastMatch_rc_model);
                 }
                 listener.onDataReceived_PastMatches(pastMatchesRcAdapterProfileList);
+
+                progressDialog.dismiss();
             }
 
             @Override

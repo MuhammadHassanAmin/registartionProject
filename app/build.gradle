@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.goprogs.riphahportalquiz"
+        applicationId "com.goprogs.riphahportmessagingalquiz"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.1'
 
 
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

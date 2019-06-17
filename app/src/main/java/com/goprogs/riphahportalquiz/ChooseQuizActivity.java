@@ -119,6 +119,9 @@ DrawerLayout mDrawerLayout;
                         if (id == R.id.nav_home) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+                        }else if (id == R.id.nav_notificaitons) {
+                            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+                            startActivity(intent);
                         } else if (id == R.id.nav_take_quiz) {
                             Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);
                             startActivity(intent);

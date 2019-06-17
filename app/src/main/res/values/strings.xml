@@ -32,6 +32,9 @@
     <string name="title_activity_match_finish">MatchFinish</string>
     <string name="title_activity_default">DefaultActivity</string>
     <string name="title_activity_logout">logout</string>
+    <string name="title_activity_notification">notification</string>
+    <string name="title_activity_add_question">addQuestion</string>
+    <string name="title_activity_match_result">MatchResult</string>
 
 
 </resources>

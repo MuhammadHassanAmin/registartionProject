@@ -61,11 +61,12 @@ public class StartMatch extends AppCompatActivity {
                 matchModel.competitor_ID = pref.getInt("userID",0);
                 matchModel.opponent_ID = parseInt(getintent().getStringExtra("opponent_uid"));
                 matchModel.topic_Name = getintent().getStringExtra("quizTopic");
-
+                matchModel.setIfFinished(false);
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference().child("matches");
                 DatabaseReference newRef = ref.push();
                 String match_id = newRef.getKey();
+
                 MatchQuestions test = new MatchQuestions();
                 test.setQuestionID("empty");
                 test.setCompetitor_Answer("empty");
@@ -74,6 +75,8 @@ public class StartMatch extends AppCompatActivity {
                 matchModel.matchQuestions.put("question2",test );
                 matchModel.matchQuestions.put("question3",test );
                 matchModel.matchQuestions.put("question4",test );
+                matchModel.matchQuestions.put("question5",test );
+
 
                 newRef.setValue(matchModel);
 
@@ -118,6 +121,9 @@ public class StartMatch extends AppCompatActivity {
 
                         if (id == R.id.nav_home) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }else if (id == R.id.nav_notificaitons) {
+                            Intent intent = new Intent(getApplicationContext(), Notifications.class);
                             startActivity(intent);
                         } else if (id == R.id.nav_take_quiz) {
                             Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);

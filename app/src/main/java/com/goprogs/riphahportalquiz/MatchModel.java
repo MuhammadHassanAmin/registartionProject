@@ -57,6 +57,15 @@ public class MatchModel {
         this.opponent_Points = opponent_Points;
     }
 
+    public boolean isIfFinished() {
+        return ifFinished;
+    }
+
+    public void setIfFinished(boolean ifFinished) {
+        this.ifFinished = ifFinished;
+    }
+
+    boolean ifFinished;
     String match_id,topic_Name;
     int   competitor_ID,competitor_Points,opponent_ID,opponent_Points;
 

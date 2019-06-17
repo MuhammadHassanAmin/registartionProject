@@ -1,5 +1,6 @@
 package com.goprogs.riphahportalquiz;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Movie;
 import android.os.Bundle;
@@ -28,12 +29,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
+    ImageView IVnotificationIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,10 @@ public class MainActivity extends AppCompatActivity{
                         if (id == R.id.nav_home) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
-                        } else if (id == R.id.nav_take_quiz) {
+                        }else if (id == R.id.nav_notificaitons) {
+                            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+                            startActivity(intent);
+                        }  else if (id == R.id.nav_take_quiz) {
                             Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);
                             startActivity(intent);
                         } else if (id == R.id.nav_profile) {

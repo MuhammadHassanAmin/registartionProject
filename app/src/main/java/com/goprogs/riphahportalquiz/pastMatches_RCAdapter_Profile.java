@@ -71,7 +71,7 @@ import static java.lang.Integer.parseInt;
             holder.tvOppnentName.setText(pastMatch.getOpponentName());
             holder.quizResult.setText(pastMatch.getResult());
             holder.quizTopic.setText(pastMatch.getQuizTopic());
-            Picasso.get().load(pastMatch.getOpponentDp()).resize(100, 100)
+            Picasso.get().load(pastMatch.getOpponentDp()).resize(43, 42)
                     .centerCrop().into(holder.ivOppnentDp);
 
 

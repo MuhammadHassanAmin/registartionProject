@@ -1,9 +1,10 @@
 package com.goprogs.riphahportalquiz;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
@@ -14,59 +15,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
-
-public class MatchFinish extends AppCompatActivity {
-    Intent intent;
-    FirebaseDatabase database;
-    DatabaseReference dbRef;
-    String userType;
-    int score;
-    TextView tvScore ;
-    Button btnProfile;
-    Intent nextIntent;
+public class MatchResult extends AppCompatActivity {
+    TextView result,opponentPoints,yourPoints;
     DrawerLayout mDrawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_match_finish);
+        setContentView(R.layout.activity_match_result);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //iniatialize Views
-        tvScore=findViewById(R.id.tvYourScoreText);
-        btnProfile = findViewById(R.id.btnGoToProfile_MatchFinish);
-        //Getting shared pref and intent
-        final SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
-        intent = getIntent();
-
-        score = intent.getIntExtra("score", 0);
-        tvScore.setText(Integer.toString(score));
-
-        ImageView userImg = findViewById(R.id.ivUserImg_Profile);
-        Picasso.get().load(pref.getString("dp","test")).resize(250, 250)
-                .centerCrop().into(userImg);
-         //Database
-        database= FirebaseDatabase.getInstance();
-        dbRef=database.getReference().child("matches");
-
-
-
-        //Click Listeners
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextIntent = new Intent(getApplicationContext(),Profile.class);
-                startActivity(nextIntent);
-            }
-        });
-
 
 
         // Create Navigation drawer and inlfate layout
@@ -100,10 +59,10 @@ public class MatchFinish extends AppCompatActivity {
                         if (id == R.id.nav_home) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
-                        } else if (id == R.id.nav_notificaitons) {
+                        }else if (id == R.id.nav_notificaitons) {
                             Intent intent = new Intent(getApplicationContext(), Notifications.class);
                             startActivity(intent);
-                        }else if (id == R.id.nav_take_quiz) {
+                        } else if (id == R.id.nav_take_quiz) {
                             Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);
                             startActivity(intent);
                         } else if (id == R.id.nav_profile) {
@@ -125,6 +84,7 @@ public class MatchFinish extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -79,6 +79,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093852055682:android:b3bd7a9d960e00e4",
+        "android_client_info": {
+          "package_name": "com.goprogs.riphahportmessagingalquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093852055682-chbvgnrrgrot5ulpm1t58va358brkmip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goprogs.riphahportmessagingalquiz",
+            "certificate_hash": "802bf1dc74a8739cd7127abd5b90eaf02f26dc75"
+          }
+        },
+        {
+          "client_id": "1093852055682-qb5geukpgi4d867e1brqq33q69uuubvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCondZZsktwZek0Cln8mnhjTMmZJYrn9gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093852055682-qb5geukpgi4d867e1brqq33q69uuubvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
