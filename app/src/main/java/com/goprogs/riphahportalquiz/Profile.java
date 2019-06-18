@@ -207,6 +207,7 @@ public class Profile extends AppCompatActivity implements DataReceivedListener {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot pastMatch : dataSnapshot.getChildren()){
                     matchModel = pastMatch.getValue(MatchModel.class);
+                    pastMatch_rc_model.setIsFinished(matchModel.isIfFinished());
                     pastMatch_rc_model.setMatchID(pastMatch.getKey());
                     pastMatch_rc_model.setQuizTopic(matchModel.getTopic_Name());
                     //checking and setting Match Result

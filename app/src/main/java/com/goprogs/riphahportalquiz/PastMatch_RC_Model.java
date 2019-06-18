@@ -41,5 +41,14 @@ public class PastMatch_RC_Model {
         Result = result;
     }
 
+    public boolean getIsFinished() {
+        return isFinished;
+    }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+    }
+
     String matchID,  opponentDp,opponentName,quizTopic,Result;
+    boolean isFinished;
 }

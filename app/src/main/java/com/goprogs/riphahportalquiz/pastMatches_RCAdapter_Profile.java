@@ -78,18 +78,16 @@ import static java.lang.Integer.parseInt;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO
-/*
 
+                    // Checking if match is finished so that we can launch the finish match activity
+                    if (pastMatch.isFinished){
+                        Intent intent = new Intent(context,MatchResult.class);
+                        intent.putExtra("match_id",pastMatch.getMatchID());
 
-                    Intent intent = new Intent(context,StartMatch.class);
-                    intent.putExtra("opponent_uid",userDetails.getId());
-                    intent.putExtra("opponent_email",userDetails.getEmail());
-                    intent.putExtra("opponent_name",userDetails.getName());
-                    intent.putExtra("opponent_dp",userDetails.getDp());
-                    intent.putExtra("quizTopic", quizTopic);
-                    context.startActivity(intent);
-*/
+                        context.startActivity(intent);
+
+                    }
+
 
 
                 }

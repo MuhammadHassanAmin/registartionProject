@@ -152,16 +152,22 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
 
     private void finishQuiz() {
         isQuizFinished = true;
-        if (userType.equals("competitor"))
+        if (userType.equals("competitor")) {
             matchRef.child("competitor_Points").setValue(userPoints);
+            Intent finishIntent = new Intent(this, MatchFinish.class);
+            finishIntent.putExtras(getIntent().getExtras());
+            finishIntent.putExtra("score", userPoints);
+            startActivity(finishIntent);
+        }
         else {
             matchRef.child("ifFinished").setValue(true);
             matchRef.child("opponent_Points").setValue(userPoints);
+            Intent finishIntent = new Intent(this, MatchResult.class);
+            finishIntent.putExtras(getIntent().getExtras());
+            finishIntent.putExtra("score", userPoints);
+            startActivity(finishIntent);
         }
-        Intent finishIntent = new Intent(this, MatchFinish.class);
-        finishIntent.putExtras(getIntent().getExtras());
-        finishIntent.putExtra("score", userPoints);
-        startActivity(finishIntent);
+
         //TODO
         Toast.makeText(getApplicationContext(), "Quiz End", Toast.LENGTH_SHORT).show();
 

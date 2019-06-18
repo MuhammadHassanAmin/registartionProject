@@ -72,19 +72,19 @@ public class Notifications_RV_Adapter  extends RecyclerView.Adapter<Notification
             public void onClick(View v) {
                 Intent intent;
                 if (notificaitonsList.get(position).getMatchFinished()){
-                    intent = new Intent(context,Profile.class);
+
+                    intent = new Intent(context, MatchResult.class);
+
                 }else{
                     intent = new Intent(context,Match.class);
                     intent.putExtra("userType","opponent");
-
                 }
                 String id = holder.itemView.getTag().toString();
+
                 intent.putExtra("match_id",holder.itemView.getTag().toString());
                 intent.putExtra("quizTopic",notification_data_model.getTopicName());
 
                 context.startActivity(intent);
-
-
             }
         });
     }
