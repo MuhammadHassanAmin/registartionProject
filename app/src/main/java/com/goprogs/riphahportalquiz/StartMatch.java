@@ -83,7 +83,7 @@ public class StartMatch extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),Match.class);
                 intent.putExtras(getintent().getExtras());
                 intent.putExtra("match_id",match_id);
-
+                intent.putExtra("opponentID",matchModel.getOpponent_ID());
                 intent.putExtra("userType","competitor");
 
                 startActivity(intent);

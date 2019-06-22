@@ -4,10 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MatchModel {
+    public Map<String, MatchQuestions> getMatchQuestions() {
+        return matchQuestions;
+    }
+
+    public void setMatchQuestions(Map<String, MatchQuestions> matchQuestions) {
+        this.matchQuestions = matchQuestions;
+    }
+
     Map<String, MatchQuestions> matchQuestions= new HashMap<String, MatchQuestions>();
 
-
-    private MatchQuestions matchQuestion;
 
     public String getMatch_id() {
         return match_id;
