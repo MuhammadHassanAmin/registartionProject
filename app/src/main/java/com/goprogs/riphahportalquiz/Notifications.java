@@ -2,7 +2,6 @@ package com.goprogs.riphahportalquiz;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.FontRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.graphics.drawable.VectorDrawableCompat;
@@ -63,7 +62,7 @@ public class Notifications extends AppCompatActivity {
 
         notification_data_modelList = new ArrayList<>();
         //init view
-         tvNewNotifications = findViewById(R.id.tv_Card_NewNotificaitions_Count_Notifications);
+         tvNewNotifications = findViewById(R.id.tv_notiCount_Notification);
 
         count =0;
         pref = getSharedPreferences("user_details", MODE_PRIVATE);

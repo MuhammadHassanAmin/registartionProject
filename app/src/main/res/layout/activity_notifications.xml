@@ -57,7 +57,7 @@
                         android:textColor="#7A7A7A" />
 
                     <TextView
-                        android:id="@+id/tv_Card_NewNotificaitions_Count_Notifications"
+                        android:id="@+id/tv_notiCount_Notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|center_vertical"
