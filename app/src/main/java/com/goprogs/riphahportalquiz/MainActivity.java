@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         addNotification();
+
+
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity{
                         }
                         else if (id == R.id.nav_logout) {
                             Intent intent = new Intent(getApplicationContext(), logout.class);
+                            startActivity(intent);
+                        }else if (id == R.id.nav_leaderboard) {
+                            Intent intent = new Intent(getApplicationContext(), LeaderBoard.class);
                             startActivity(intent);
                         }
                         else

@@ -15,10 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".LeaderBoard"></activity>
         <activity
             android:name=".MatchResult"
             android:label="@string/title_activity_match_result"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".addInToDb" />
         <activity android:name=".Notifications" />
         <activity
