@@ -84,7 +84,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1093852055682:android:b3bd7a9d960e00e4",
         "android_client_info": {
-          "package_name": "com.goprogs.riphahportmessagingalquiz"
+          "package_name": "com.goprogs.riphahportalquiz"
         }
       },
       "oauth_client": [
@@ -92,7 +92,7 @@
           "client_id": "1093852055682-chbvgnrrgrot5ulpm1t58va358brkmip.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.goprogs.riphahportmessagingalquiz",
+            "package_name": "com.goprogs.riphahportalquiz",
             "certificate_hash": "802bf1dc74a8739cd7127abd5b90eaf02f26dc75"
           }
         },

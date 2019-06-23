@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Notifications extends AppCompatActivity {
@@ -49,7 +52,7 @@ public class Notifications extends AppCompatActivity {
     SharedPreferences pref;
     DrawerLayout mDrawerLayout;
     int newMatchesCount;
-    TextView tvNewNotifications;
+    TextView tvNewNotifications,tvLoadingNotification;
     int count;
 
 
@@ -63,7 +66,7 @@ public class Notifications extends AppCompatActivity {
         notification_data_modelList = new ArrayList<>();
         //init view
          tvNewNotifications = findViewById(R.id.tv_notiCount_Notification);
-
+        tvLoadingNotification =findViewById(R.id.tv_loading_notification);
         count =0;
         pref = getSharedPreferences("user_details", MODE_PRIVATE);
 
@@ -90,7 +93,13 @@ public class Notifications extends AppCompatActivity {
         query .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+
+                        tvLoadingNotification.setText("You Dont Have Any New Notification");
+
+                }
                     for (DataSnapshot match : dataSnapshot.getChildren()){
+
                         notification_data_model = new Notification_Data_Model();
                         matchModel = match.getValue(MatchModel.class);
                         matchModel.setMatch_id(match.getKey());
@@ -153,7 +162,11 @@ public class Notifications extends AppCompatActivity {
                         else if (id == R.id.nav_logout) {
                             Intent intent = new Intent(getApplicationContext(), logout.class);
                             startActivity(intent);
+                        }else if (id == R.id.nav_leaderboard) {
+                            Intent intent = new Intent(getApplicationContext(), LeaderBoard.class);
+                            startActivity(intent);
                         }
+
                         else
                         {
                             return true;
@@ -211,7 +224,15 @@ public class Notifications extends AppCompatActivity {
                             notification_data_modelList.get(count).setChallengerDP("https://riphahportal.com/storage/profiles/"+obj.getString("picture"));
                             notification_data_modelList.get(count).setName(obj.getString("name"));
                             count++;
-                            adapter.notifyDataSetChanged();
+                            if (count == notification_data_modelList.size())
+                            {
+
+                                    tvLoadingNotification.setText("");
+                                    Collections.reverse(notification_data_modelList);
+                                    adapter.notifyDataSetChanged();
+
+                            }
+
                         } catch (Throwable t) {
                             Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
                         }
@@ -234,6 +255,7 @@ public class Notifications extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notification_data_modelList.clear();
                 for(DataSnapshot count : dataSnapshot.getChildren())
                 {
                     matchModel = count.getValue(MatchModel.class);

@@ -51,40 +51,41 @@
 
                 <TextView
                     android:id="@+id/tvYourScoreText"
-                    android:layout_width="144dp"
-                    android:layout_height="47dp"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
 
-                    android:layout_marginTop="204dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="score"
-                    android:textSize="30sp"
+                    android:textSize="36sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvQuizStatsTitle_Profile" />
 
                 <TextView
                     android:id="@+id/tvQuizStatsTitle_Profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="168dp"
+                    android:layout_width="178dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_horizontal"
                     android:text="Your Score"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.475"
+                    app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/ivUserImg_Profile" />
 
                 <TextView
                     android:id="@+id/tvWaitingForOpponet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="300dp"
+                    android:layout_marginTop="32dp"
                     android:text="Waiting for opponent to take quiz..."
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvYourScoreText" />
 
                 <Button
                     android:id="@+id/btnGoToProfile_MatchFinish"
@@ -101,8 +102,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.12"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvYourScoreText"
-                    app:layout_constraintVertical_bias="0.225" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvWaitingForOpponet"
+                    app:layout_constraintVertical_bias="0.066" />
 
             </android.support.constraint.ConstraintLayout>
 

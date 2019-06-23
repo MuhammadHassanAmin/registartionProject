@@ -1,10 +1,16 @@
 package com.goprogs.riphahportalquiz;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -21,6 +27,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
@@ -77,7 +89,9 @@ public class LoginActivity extends AppCompatActivity {
         intent = new Intent(this, MainActivity.class);
 
         if (pref.contains("userID") && pref.contains("userName")) {
+
             startActivity(intent);
+
         }
 
         // Assigning ID's to EditText.
@@ -118,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -154,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
 
 // Instantiate the RequestQueue.
                             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                            String url = "https://riphahportal.com/API/user_api_handler.php?action=fetch_single&id="+ServerResponse;
+                            String url = "https://riphahportal.com/API/user_api_handler.php?action=fetch_single&id=" + ServerResponse;
 
 // Request a string response from the provided URL.
                             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -168,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 SharedPreferences.Editor editor = pref.edit();
                                                 editor.putInt("userID", Integer.parseInt(obj.getString("id")));
                                                 editor.putString("userName", obj.getString("name"));
-                                                editor.putString("dp", "https://riphahportal.com/storage/profiles/"+obj.getString("picture"));
+                                                editor.putString("dp", "https://riphahportal.com/storage/profiles/" + obj.getString("picture"));
                                                 editor.apply();
                                                 startActivity(intent);
                                             } catch (Throwable t) {
@@ -178,11 +193,11 @@ public class LoginActivity extends AppCompatActivity {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                  Toast.makeText(LoginActivity.this,"Error finding user data",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Error finding user data", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
-                        // Add the request to the RequestQueue.
+                            // Add the request to the RequestQueue.
                             queue.add(stringRequest);
                         } else {
                             // Showing Echo Response Message Coming From Server.

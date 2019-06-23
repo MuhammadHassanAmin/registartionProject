@@ -1,5 +1,6 @@
 package com.goprogs.riphahportalquiz;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -41,13 +42,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LeaderBoard extends AppCompatActivity {
-
+    private DrawerLayout mDrawerLayout;
     ListView listView;
     ArrayList<userWins> userWins = new ArrayList<userWins>();
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    int count=-1;
-    DrawerLayout mDrawerLayout;
+    int count = -1;
+    ProgressDialog progressDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +58,67 @@ public class LeaderBoard extends AppCompatActivity {
         listView = findViewById(R.id.lv_leaderboard);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference().child("matches");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.show();
 
 
+        // Create Navigation drawer and inlfate layout
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        // Adding menu icon to Toolbar
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            VectorDrawableCompat indicator
+                    = VectorDrawableCompat.create(getResources(), R.drawable.ic_menu, getTheme());
+            indicator.setTint(ResourcesCompat.getColor(getResources(), R.color.white, getTheme()));
+            supportActionBar.setHomeAsUpIndicator(indicator);
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        // Set behavior of Navigation drawer
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    // This method will trigger on item Click of navigation menu
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // Set item in checked state
+                        menuItem.setChecked(true);
+                        // TODO: handle navigation
+                        int id = menuItem.getItemId();
+                        if (id == R.id.nav_home) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else if (id == R.id.nav_notificaitons) {
+                            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+                            startActivity(intent);
+                        } else if (id == R.id.nav_take_quiz) {
+                            Intent intent = new Intent(getApplicationContext(), ChooseQuizActivity.class);
+                            startActivity(intent);
+                        } else if (id == R.id.nav_profile) {
+                            Intent intent = new Intent(getApplicationContext(), Profile.class);
+                            startActivity(intent);
+
+                        } else if (id == R.id.nav_logout) {
+                            Intent intent = new Intent(getApplicationContext(), logout.class);
+                            startActivity(intent);
+                        } else if (id == R.id.nav_leaderboard) {
+                            Intent intent = new Intent(getApplicationContext(), LeaderBoard.class);
+                            startActivity(intent);
+                        } else {
+                            return true;
+                        }
+                        // Closing drawer on item click
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             MatchModel matchModel = new MatchModel();
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     matchModel = snapshot.getValue(MatchModel.class);
                     if (matchModel.isIfFinished()) {
@@ -74,7 +130,13 @@ public class LeaderBoard extends AppCompatActivity {
                         }
                     }
                 }
+                if (userWins.size() == 0) {
+                    progressDialog.dismiss();
 
+                } else {
+
+                    progressDialog.setMessage("This May Take Some Time...");
+                }
             }
 
             @Override
@@ -105,20 +167,19 @@ public class LeaderBoard extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     void addWin(int userID) {
         int i = 0;
         boolean exist = false;
         while (i < userWins.size()) {
             if (userWins.get(i).getUserID() == userID) {
-                userWins.get(i).setWinCount(userWins.get(i).getWinCount()+1);
+                userWins.get(i).setWinCount(userWins.get(i).getWinCount() + 1);
                 exist = true;
 
                 break;
             }
             i++;
         }
-        if (!exist){
+        if (!exist) {
             userWins userWinsobj = new userWins();
 
             userWinsobj.setUserID(userID);
@@ -129,14 +190,15 @@ public class LeaderBoard extends AppCompatActivity {
 
         }
     }
-    void getUserData(int ID){
+
+    void getUserData(int ID) {
 
 
-// Instantiate the RequestQueue.
+        // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://riphahportal.com/API/user_api_handler.php?action=fetch_single&id="+ID;
+        String url = "https://riphahportal.com/API/user_api_handler.php?action=fetch_single&id=" + ID;
 
-// Request a string response from the provided URL.
+        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -146,12 +208,11 @@ public class LeaderBoard extends AppCompatActivity {
 
                         try {
                             JSONObject obj = new JSONObject(response);
-                            userWins.get(count).setDp("https://riphahportal.com/storage/profiles/"+obj.getString("picture"));
+                            userWins.get(count).setDp("https://riphahportal.com/storage/profiles/" + obj.getString("picture"));
 
                             userWins.get(count).setUserName(obj.getString("name"));
 
-                            if (obj.getString("picture").equals("nopic"))
-                            {
+                            if (obj.getString("picture").equals("nopic")) {
                                 userWins.get(count).setDp("https://riphahportal.com/images/default-profile.jpg");
                             }
                         } catch (Throwable t) {
@@ -159,7 +220,7 @@ public class LeaderBoard extends AppCompatActivity {
                         }
 
 
-                        if (count>=(userWins.size()-1)){
+                        if (count >= (userWins.size() - 1)) {
 
                             setAdapter();
                         }
@@ -167,7 +228,7 @@ public class LeaderBoard extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error finding user data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error finding user data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -175,18 +236,19 @@ public class LeaderBoard extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+
     public void setAdapter() {
+        progressDialog.setMessage("Almost Done...");
         ArrayList<userWins> tempList = new ArrayList<>();
         int i = 0;
-        int max=0;
-        while (i<userWins.size())
-        {
+        int max = 0;
+        while (i < userWins.size()) {
             int maxCount = userWins.get(i).getWinCount();
-            max=i;
-            int j = i+1;
-            while (j<userWins.size()){
+            max = i;
+            int j = i + 1;
+            while (j < userWins.size()) {
                 if (userWins.get(j).getWinCount() > maxCount)
-                max=j;
+                    max = j;
                 j++;
             }
             tempList.add(userWins.get(max));
@@ -194,8 +256,9 @@ public class LeaderBoard extends AppCompatActivity {
 
         }
 
-        CustomAdapter_usersWins adapter_usersWins = new CustomAdapter_usersWins(this,tempList);
+        CustomAdapter_usersWins adapter_usersWins = new CustomAdapter_usersWins(this, tempList);
         listView.setAdapter(adapter_usersWins);
+        progressDialog.dismiss();
 
     }
 }

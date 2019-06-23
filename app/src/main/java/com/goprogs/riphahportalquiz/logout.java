@@ -91,6 +91,9 @@ public class logout extends AppCompatActivity {
                         else if (id == R.id.nav_logout) {
                             Intent intent = new Intent(getApplicationContext(), logout.class);
                             startActivity(intent);
+                        }else if (id == R.id.nav_leaderboard) {
+                            Intent intent = new Intent(getApplicationContext(), LeaderBoard.class);
+                            startActivity(intent);
                         }
                         else
                         {

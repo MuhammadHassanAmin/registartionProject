@@ -35,6 +35,6 @@
     <string name="title_activity_notification">notification</string>
     <string name="title_activity_add_question">addQuestion</string>
     <string name="title_activity_match_result">MatchResult</string>
-
+    <string name="title_activity_leader__board">Leader_Board</string>
 
 </resources>

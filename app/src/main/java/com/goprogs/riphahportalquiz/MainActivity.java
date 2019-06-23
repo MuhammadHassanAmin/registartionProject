@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Movie;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -35,19 +37,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     ImageView IVnotificationIcon;
+    SharedPreferences pref;
+   // AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addNotification();
+        pref = getSharedPreferences("user_details", MODE_PRIVATE);
 
+        /*MobileAds.initialize(this, "YOUR_ADMOB_APP_ID");
+        mAdView = findViewById(R.id.adView);
+        //mAdView.setAdSize(AdSize.SMART_BANNER);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);*/
 
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,26 +123,52 @@ public class MainActivity extends AppCompatActivity{
                         return true;
                     }
                 });
-
+        checkNewNotifications();
     }
+    public  void  checkNewNotifications(){
+        FirebaseDatabase database =FirebaseDatabase.getInstance();
+        Query query = database.getReference().child("matches").orderByChild("opponent_ID").equalTo(pref.getInt("userID",0));
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    MatchModel matchModel = snapshot.getValue(MatchModel.class);
+                    matchModel.setMatch_id(snapshot.getKey());
+                    if (!matchModel.isIfFinished()){
+                        addNotification(matchModel.getTopic_Name(), matchModel.getTopic_Name(),matchModel.getMatch_id(),matchModel.getOpponent_ID());
+                    }
 
+                }
+            }
 
-    private void addNotification() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void addNotification(String challengerName, String quizTopic,String matchID , int opponentID)
+    {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+                        .setContentTitle(challengerName +"Challenged You In " + quizTopic)
+                        .setContentText("Click Now To Take The Quiz..");
+        Intent notificationIntent = new Intent(this, Match.class);
+        notificationIntent.putExtra("match_id",matchID);
+        notificationIntent.putExtra("quizTopic",quizTopic);
+        notificationIntent.putExtra("userType","opponent");
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra("opponentID",opponentID);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
-
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

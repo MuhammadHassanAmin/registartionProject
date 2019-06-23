@@ -57,7 +57,18 @@
                 android:layout_height="501dp"
                 android:background="#f9f9f9"
                 app:srcCompat="@drawable/cover1" />
+<!--
+            <com.google.android.gms.ads.AdView
 
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+
+                android:layout_marginBottom="118dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-1808685292884350/5141623884"></com.google.android.gms.ads.AdView>-->
         </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
@@ -67,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navheader"
         app:menu="@menu/menu_navigation" />

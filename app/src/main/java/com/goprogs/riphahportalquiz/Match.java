@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.sip.SipSession;
 import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -26,7 +27,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Match extends AppCompatActivity implements DataReceivedListener {
     List<questionModel> quizQuestions = new ArrayList<questionModel>();
@@ -55,6 +60,7 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
     int userID;
     long quizTimeLimit;
     String quizTopic;
+    Map<String, MatchQuestions> hashMatchQuestions;
     int opponentID;
     DatabaseReference matchRef;
     boolean returnResult, isAllQuestionsFromDBReceived, isCompetitorUniqueQuestionsReceived, isOpponentUniqueQuestionsReceived = false;
@@ -93,6 +99,7 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
         userType = intent.getStringExtra("userType");
         quizTimeLimit = 10000;// in milliseconds
 
+        hashMatchQuestions = new HashMap<String, MatchQuestions>();
         userPoints = 0;
         //Intializing Views
         context = this;
@@ -116,8 +123,58 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
         database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference().child("quizQuestions").child(quizTopic);
         matchRef = database.getReference().child("matches").child(match_id);
-        loadQuestionFromDB(ref, this);
+        if (userType.equals("opponent")) {
+            loadMatchQuestionsForOpponent();
+
+
+        } else {
+            loadQuestionFromDB(ref, this);
+        }
     }
+
+
+    private void loadMatchQuestionsForOpponent() {
+
+        DatabaseReference databaseReference = database.getReference().child("matches").child(match_id);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                MatchModel matchModel = new MatchModel();
+                matchModel = dataSnapshot.getValue(MatchModel.class);
+                hashMatchQuestions = matchModel.getMatchQuestions();
+                MatchQuestions q1 = new MatchQuestions();
+                for (MatchQuestions questions : hashMatchQuestions.values()) {
+                    q1 = questions;
+                    String key = q1.getQuestionID();
+                    DatabaseReference databaseReference1 = database.getReference().child("quizQuestions").child(quizTopic).child(key);
+                    databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            questionModel questionModel = new questionModel();
+                            questionModel = dataSnapshot.getValue(questionModel.class);
+                            questionModel.setQuestionID(dataSnapshot.getKey());
+                            quizQuestions.add(questionModel);
+                            if (quizQuestions.size() == 5) {
+                                progressDialog.dismiss();
+                               Collections.reverse(quizQuestions);
+                               quizQuestions=quizQuestions;
+                                loadNextQuestion();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     protected void onPause() {
@@ -371,7 +428,6 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
             }
         });
     }
-
     public void findUniqueQuestionsOpponent() {
 
         //Finding uniques Quesitons of opponent
@@ -424,27 +480,27 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
 
-                            if (allQuestionsFromDB.size() == 0){
-                                break;
-                            }
+                                if (allQuestionsFromDB.size() == 0) {
+                                    break;
+                                }
 
-                                    int i = 0;
+                                int i = 0;
 
-                                    while (i<allQuestionsFromDB.size()) {
-                                        if (!snapshot.getKey().equals(allQuestionsFromDB.get(i).getQuestionID())) {
-                                            questionModel = snapshot.getValue(questionModel.class);
-                                            allQuestionsFromDB.add(questionModel);
-                                            break;
-                                        }
-                                        i++;
+                                while (i < allQuestionsFromDB.size()) {
+                                    if (!snapshot.getKey().equals(allQuestionsFromDB.get(i).getQuestionID())) {
+                                        questionModel = snapshot.getValue(questionModel.class);
+                                        allQuestionsFromDB.add(questionModel);
+                                        break;
                                     }
+                                    i++;
+                                }
 
 
                                 if (allQuestionsFromDB.size() == 5)
                                     break;
                             }
                             // if no unique question is found lets fill it with the old one's
-                            if (allQuestionsFromDB.size() == 0 ) {
+                            if (allQuestionsFromDB.size() == 0) {
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                                     questionModel = snapshot.getValue(questionModel.class);
@@ -478,6 +534,7 @@ public class Match extends AppCompatActivity implements DataReceivedListener {
 
     public void onDataReceived_PastMatches(List<PastMatch_RC_Model> quizQuestions) {
     }
+
 }
 
 
